@@ -1,6 +1,5 @@
 import { VideosRepository } from "../videosRepository";
 import { prisma } from "@/lib/prisma";
-import { Video } from "@prisma/client";
 
 export class PrismaVideosRepository implements VideosRepository {
   findById(id: string) {
@@ -20,13 +19,13 @@ export class PrismaVideosRepository implements VideosRepository {
     });
   }
 
-  update(video: Video) {
+  updateTranscription(videoId: string, transcription: string) {
     return prisma.video.update({
       where: {
-        id: video.id,
+        id: videoId,
       },
       data: {
-        transcription: video.transcription,
+        transcription,
       },
     });
   }

@@ -1,4 +1,4 @@
-import { ChatCompletion } from "openai/resources/chat/completions";
+import { OpenAIStream } from "ai";
 
 import { TranscriptionNotFound } from "../errors/transcriptionNotFound";
 import { VideoNotFound } from "../errors/videoNotFound";
@@ -7,12 +7,12 @@ import { VideosRepository } from "@/repositories/videosRepository";
 
 interface CompletionUseCaseRequest {
   videoId: string;
-  template: string;
+  prompt: string;
   temperature: number;
 }
 
 interface CompletionUseCaseResponse {
-  completion: ChatCompletion;
+  stream: ReadableStream<string>;
 }
 
 export class CompletionUseCase {
@@ -20,7 +20,7 @@ export class CompletionUseCase {
 
   async execute({
     videoId,
-    template,
+    prompt,
     temperature,
   }: CompletionUseCaseRequest): Promise<CompletionUseCaseResponse> {
     const video = await this.videosRepository.findById(videoId);
@@ -33,17 +33,20 @@ export class CompletionUseCase {
       throw new TranscriptionNotFound();
     }
 
-    const promptMessage = template.replace(
+    const promptMessage = prompt.replace(
       "{transcription}",
       video.transcription
     );
 
-    const completion = await openai.chat.completions.create({
+    const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo-16k",
       temperature,
       messages: [{ role: "user", content: promptMessage }],
+      stream: true,
     });
 
-    return { completion };
+    const stream = OpenAIStream(response);
+
+    return { stream };
   }
 }

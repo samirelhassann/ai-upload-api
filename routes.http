@@ -1,10 +1,10 @@
 # @name get-prompts
-GET http://localhost:3333/prompts/list
+GET http://localhost:3334/prompts/list
 
 ### 
 
 # @name /videos/upload
-POST http://localhost:3333/videos/upload
+POST http://localhost:3334/videos/upload
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 
@@ -18,7 +18,7 @@ Content-Type: audio/npeg
 ### 
 
 # @name /videos/{video-id}/transcription
-POST http://localhost:3333/videos/d291c791-fd38-4254-bacc-c3c3d3860e5e/transcription
+POST http://localhost:3334/videos/d0808f72-8951-4e7c-a578-2138a608baf5/transcription
 Content-Type: application/json
 
 {
@@ -28,11 +28,11 @@ Content-Type: application/json
 ### 
 
 # @name /ai/completion
-POST http://localhost:3333/ai/completion
+POST http://localhost:3334/ai/completion
 Content-Type: application/json
 
 {
-    "videoId": "d291c791-fd38-4254-bacc-c3c3d3860e5e",
-    "template": "Gere um resumo sucinto da transcrição do video informado a seguir: '''{transcription}'''",
+    "videoId": "d0808f72-8951-4e7c-a578-2138a608baf5",
+    "prompt": "Gere um resumo sucinto da transcrição do video informado a seguir: '''{transcription}'''",
     "temperature": 0.5
 }

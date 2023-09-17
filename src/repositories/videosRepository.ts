@@ -5,5 +5,5 @@ export interface VideosRepository {
 
   findById(id: string): Promise<Video | null>;
 
-  update(video: Video): Promise<Video>;
+  updateTranscription(videoId: string, transcription: string): Promise<Video>;
 }

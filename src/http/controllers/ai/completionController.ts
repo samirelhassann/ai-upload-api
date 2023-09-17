@@ -1,3 +1,4 @@
+import { streamToResponse } from "ai";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -9,11 +10,18 @@ export async function CompletionController(
 ) {
   const bodySchema = z.object({
     videoId: z.string(),
-    template: z.string(),
+    prompt: z.string(),
     temperature: z.number().min(0).max(1).default(0.5),
   });
 
   await makeCompletionUseCase()
     .execute({ ...bodySchema.parse(request.body) })
-    .then((response) => reply.status(200).send(response));
+    .then((response) =>
+      streamToResponse(response.stream, reply.raw, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        },
+      })
+    );
 }

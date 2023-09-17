@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "prod": "node build/server.js",
@@ -28,6 +31,7 @@
     "@fastify/cors": "8.3.0",
     "@fastify/multipart": "7.7.3",
     "@prisma/client": "5.3.1",
+    "ai": "2.2.12",
     "date-fns": "2.30.0",
     "dotenv": "16.3.1",
     "eslint": "8.43.0",

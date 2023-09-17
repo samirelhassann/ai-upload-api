@@ -39,7 +39,7 @@ export class TranscriptUseCase {
 
     const transcription = response.text;
 
-    this.videosRepository.update({ ...video, transcription });
+    await this.videosRepository.updateTranscription(video.id, transcription);
 
     return { transcription };
   }
